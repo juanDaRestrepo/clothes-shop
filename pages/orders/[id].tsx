@@ -2,9 +2,9 @@ import React from "react";
 import { ShopLayout } from "../../components/layouts";
 import {
   Box,
-  Button,
   Card,
   CardContent,
+  Chip,
   Divider,
   Grid,
   Link,
@@ -13,16 +13,35 @@ import {
 import CartList from "../../components/cart/CartList";
 import OrderSummary from "../../components/cart/OrderSummary";
 import NextLink from "next/link";
+import {
+  CreditCardOffOutlined,
+  CreditScoreOutlined,
+} from "@mui/icons-material";
 
-const SummaryPage = () => {
+const OrderPage = () => {
   return (
     <ShopLayout
-      title="Resumen de orden"
+      title="Resumen de orden 12345634"
       pageDescription={"Resumen de la orden"}
     >
       <Typography variant="h1" component="h1">
-        Resumen de la orden
+        Orden: ABC123
       </Typography>
+
+      {/* <Chip 
+        sx={{ my: 2 }}
+        label="Pendiente de pago"
+        variant="outlined"
+        color="error"
+        icon={ <CreditCardOffOutlined />}
+      /> */}
+      <Chip
+        sx={{ my: 2 }}
+        label="Orden ya fue pagada"
+        variant="outlined"
+        color="success"
+        icon={<CreditScoreOutlined />}
+      />
       <Grid container>
         <Grid item xs={12} sm={7}>
           <CartList />
@@ -35,13 +54,14 @@ const SummaryPage = () => {
               <Divider sx={{ my: 1 }} />
 
               <Box display="flex" justifyContent="space-between">
-              <Typography variant="subtitle1">Dirección de entrega</Typography>
+                <Typography variant="subtitle1">
+                  Dirección de entrega
+                </Typography>
                 <NextLink href="/checkout/address" passHref legacyBehavior>
                   <Link underline="always">Editar</Link>
                 </NextLink>
               </Box>
 
-             
               <Typography>Daniel Restrepo</Typography>
               <Typography>
                 mz 28 cs 2 comunidad el departamento 2500 lotes, cuba
@@ -60,9 +80,14 @@ const SummaryPage = () => {
               <OrderSummary />
 
               <Box sx={{ mt: 3 }}>
-                <Button color="secondary" className="circular-btn" fullWidth>
-                  Confirmar Orden
-                </Button>
+                <h1>Pagar</h1>
+                <Chip
+                  sx={{ my: 2 }}
+                  label="Orden ya fue pagada"
+                  variant="outlined"
+                  color="success"
+                  icon={<CreditScoreOutlined />}
+                />
               </Box>
             </CardContent>
           </Card>
@@ -72,4 +97,4 @@ const SummaryPage = () => {
   );
 };
 
-export default SummaryPage;
+export default OrderPage;

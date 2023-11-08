@@ -9,7 +9,7 @@ const CartPage = () => {
     <ShopLayout title='Carrito -3' pageDescription={'Carrito de compras de la tienda'}>
         <Grid container>
             <Grid item xs={ 12 } sm={ 7 }>
-                <CartList />
+                <CartList editable={true}/>
             </Grid>
             <Grid item xs={ 12 } sm={ 5 }>
                 <Card className='summary-card'>

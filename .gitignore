@@ -38,3 +38,6 @@ yarn-error.log*
 
 # image files
 /public/products/
+
+# mongo
+mongo/

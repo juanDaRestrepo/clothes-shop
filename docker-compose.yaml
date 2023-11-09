@@ -1,0 +1,8 @@
+services:
+  clothesdb:
+    image: mongo:5.0.0
+    container_name: clothes-database
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo:/data/db

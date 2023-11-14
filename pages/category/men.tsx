@@ -15,10 +15,10 @@ const menPage = () => {
       }
     >
       <Typography variant="h1" component="h1">
-        Tienda
+        Hombres
       </Typography>
       <Typography variant="h2" sx={{ mb: 1 }}>
-        Hombres
+        Productos para hombres
       </Typography>
       {isLoading ? <FullScreenLoading /> : <ProductList products={products} />}
     </ShopLayout>

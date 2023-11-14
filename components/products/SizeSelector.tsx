@@ -8,7 +8,6 @@ interface Props {
 }
 
 const SizeSelector: FC<Props> = ({selectedSize, sizes}) => {
-    console.log(selectedSize)
 
   return (
     <Box>

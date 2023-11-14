@@ -10,9 +10,17 @@ import {
   Badge,
 } from "@mui/material";
 
+import { useRouter } from 'next/router'
+
 import NextLink from "next/link";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
+
+  
+  const {asPath} = useRouter();
+
+
   return (
     <AppBar>
       <Toolbar>
@@ -36,18 +44,18 @@ const Navbar = () => {
         <Box sx={{ display: { xs: "none", sm: "block" } }}>
           <NextLink href="/category/men" passHref legacyBehavior>
             <Link>
-              <Button>Hombres</Button>
+              <Button color={asPath.includes('/men') ? 'primary' : 'info'}>Hombres</Button>
             </Link>
           </NextLink>
 
           <NextLink href="/category/women" passHref legacyBehavior>
             <Link>
-              <Button>Mujeres</Button>
+              <Button color={asPath.includes('/women') ? 'primary' : 'info'}>Mujeres</Button>
             </Link>
           </NextLink>
           <NextLink href="/category/kids" passHref legacyBehavior>
             <Link>
-              <Button>Niños</Button>
+              <Button color={asPath.includes('/kids') ? 'primary' : 'info'}>Niños</Button>
             </Link>
           </NextLink>
         </Box>

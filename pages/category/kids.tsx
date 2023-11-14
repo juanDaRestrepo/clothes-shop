@@ -7,7 +7,7 @@ import ProductList from "../../components/products/ProductCardList";
 
 const kidsPage = () => {
   const { products, isLoading } = useProducts("/products?gender=kid");
-  console.log(products)
+  console.log(products);
   return (
     <ShopLayout
       title={"The Clothe´s Shop- niños"}
@@ -16,10 +16,10 @@ const kidsPage = () => {
       }
     >
       <Typography variant="h1" component="h1">
-        Tienda
+        Niños
       </Typography>
       <Typography variant="h2" sx={{ mb: 1 }}>
-        Niños
+        Productos para niños
       </Typography>
       {isLoading ? <FullScreenLoading /> : <ProductList products={products} />}
     </ShopLayout>

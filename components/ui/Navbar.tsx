@@ -13,11 +13,13 @@ import {
 import { useRouter } from 'next/router'
 
 import NextLink from "next/link";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { UiContext } from "../../context";
 
 const Navbar = () => {
 
-  
+  const { toggleSideMenu } = useContext(UiContext)
+
   const {asPath} = useRouter();
 
 
@@ -72,7 +74,7 @@ const Navbar = () => {
           </IconButton>
         </NextLink>
 
-        <Button>Menu</Button>
+        <Button onClick={toggleSideMenu}>Menu</Button>
       </Toolbar>
     </AppBar>
   );

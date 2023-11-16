@@ -7,10 +7,12 @@ import {
   InputAdornment,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   ListSubheader,
 } from "@mui/material";
+
 import {
   AccountCircleOutlined,
   AdminPanelSettings,
@@ -24,13 +26,22 @@ import {
   VpnKeyOutlined,
 } from "@mui/icons-material";
 
+import { useContext } from "react";
+import { UiContext } from "../../context";
+
+
 
 const SideMenu = () => {
+
+  const { isMenuOpen, toggleSideMenu} = useContext(UiContext);
+
+
   return (
     <Drawer
-      open={false}
+      open={isMenuOpen}
       anchor="right"
       sx={{ backdropFilter: "blur(4px)", transition: "all 0.5s ease-out" }}
+      onClose={toggleSideMenu}
     >
       <Box sx={{ width: 250, paddingTop: 5 }}>
         <List>
@@ -48,78 +59,78 @@ const SideMenu = () => {
             />
           </ListItem>
 
-          <ListItem button>
+          <ListItemButton>
             <ListItemIcon>
               <AccountCircleOutlined />
             </ListItemIcon>
             <ListItemText primary={"Perfil"} />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button>
+          <ListItemButton>
             <ListItemIcon>
               <ConfirmationNumberOutlined />
             </ListItemIcon>
             <ListItemText primary={"Mis Ordenes"} />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button sx={{ display: { xs: "", sm: "none" } }}>
+          <ListItemButton  sx={{ display: { xs: "", sm: "none" } }} href="/category/men" onClick={() => toggleSideMenu}>
             <ListItemIcon>
               <MaleOutlined />
             </ListItemIcon>
             <ListItemText primary={"Hombres"} />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button sx={{ display: { xs: "", sm: "none" } }}>
+          <ListItemButton sx={{ display: { xs: "", sm: "none" } }} href="/category/women" onClick={() => toggleSideMenu }>
             <ListItemIcon>
               <FemaleOutlined />
             </ListItemIcon>
             <ListItemText primary={"Mujeres"} />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button sx={{ display: { xs: "", sm: "none" } }}>
+          <ListItemButton sx={{ display: { xs: "", sm: "none" } }} href="/category/kids" onClick={() => toggleSideMenu }>
             <ListItemIcon>
               <EscalatorWarningOutlined />
             </ListItemIcon>
             <ListItemText primary={"Niños"} />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button>
+          <ListItemButton>
             <ListItemIcon>
               <VpnKeyOutlined />
             </ListItemIcon>
             <ListItemText primary={"Ingresar"} />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button>
+          <ListItemButton>
             <ListItemIcon>
               <LoginOutlined />
             </ListItemIcon>
             <ListItemText primary={"Salir"} />
-          </ListItem>
+          </ListItemButton>
 
           {/* Admin */}
           <Divider />
           <ListSubheader>Admin Panel</ListSubheader>
 
-          <ListItem button>
+          <ListItemButton>
             <ListItemIcon>
               <CategoryOutlined />
             </ListItemIcon>
             <ListItemText primary={"Productos"} />
-          </ListItem>
-          <ListItem button>
+          </ListItemButton>
+          <ListItemButton>
             <ListItemIcon>
               <ConfirmationNumberOutlined />
             </ListItemIcon>
             <ListItemText primary={"Ordenes"} />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button>
+          <ListItemButton>
             <ListItemIcon>
               <AdminPanelSettings />
             </ListItemIcon>
             <ListItemText primary={"Usuarios"} />
-          </ListItem>
+          </ListItemButton>
         </List>
       </Box>
     </Drawer>

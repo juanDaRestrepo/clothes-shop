@@ -1,13 +1,21 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { ShopLayout } from "../../components/layouts";
-import { initialData } from "../../database/products";
 import ProductSlideshow from "../../components/products/ProductSlideshow";
 import ItemCounter from "../../components/ui/ItemCounter";
 import SizeSelector from "../../components/products/SizeSelector";
+import { useRouter } from "next/router";
+import { GetServerSideProps, NextPage } from "next";
+import { IProduct } from "../../interfaces";
+import { getProductBySlug } from "../../database/dbProducts";
+import Product from '../../models/Products';
 
-const product = initialData.products[0];
+interface Props {
+  product: IProduct;
+}
 
-const ProductPage = () => {
+const ProductPage: NextPage<Props> = ({ product }) => {
+  const router = useRouter();
+
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
       <Grid container spacing={3}>
@@ -28,9 +36,7 @@ const ProductPage = () => {
             <Box sx={{ my: 2 }}>
               <Typography variant="subtitle2">Cantidad</Typography>
               <ItemCounter />
-              <SizeSelector
-                sizes={product.sizes}
-              />
+              <SizeSelector sizes={product.sizes} />
             </Box>
 
             {/* Agregar al carrito */}
@@ -38,18 +44,39 @@ const ProductPage = () => {
               Agregar al carrito
             </Button>
 
-           {/*  <Chip label="No hay disponibles" color="error" variant="outlined" /> */}
+            {/*  <Chip label="No hay disponibles" color="error" variant="outlined" /> */}
 
-           {/* Descripción */}
-           <Box sx={{ mt:3 }}>
-              <Typography variant='subtitle2'>Descripción</Typography>
-              <Typography variant='body2'>{product.description}</Typography>
-           </Box>
+            {/* Descripción */}
+            <Box sx={{ mt: 3 }}>
+              <Typography variant="subtitle2">Descripción</Typography>
+              <Typography variant="body2">{product.description}</Typography>
+            </Box>
           </Box>
         </Grid>
       </Grid>
     </ShopLayout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async ({params}) => {
+  
+  const { slug = '' } = params as { slug: string };
+  const product = await  getProductBySlug(slug);
+
+  if ( !product ) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  } 
+
+  return {
+    props: {
+      product
+    }
+  }
+}
 
 export default ProductPage;

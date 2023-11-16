@@ -4,7 +4,7 @@ import { Box, Button, Grid, Link, TextField, Typography } from "@mui/material"
 import AuthLayout from "../../components/layouts/AuthLayout"
 
 
-const login = () => {
+const LoginPage = () => {
   return (
     <AuthLayout title="Ingresar">
         <Box sx={{ width: 350, padding: '10px 20px' }}>
@@ -37,4 +37,4 @@ const login = () => {
   )
 }
 
-export default login
+export default LoginPage

@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 import FullScreenLoading from "../../components/ui/FullScreenLoading";
 import ProductList from "../../components/products/ProductCardList";
 
-const womenPage = () => {
+const WomenPage = () => {
   const { products, isLoading } = useProducts("/products?gender=women");
   return (
     <ShopLayout
@@ -25,4 +25,4 @@ const womenPage = () => {
   );
 };
 
-export default womenPage;
+export default WomenPage;

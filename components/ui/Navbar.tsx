@@ -25,8 +25,6 @@ import { UiContext } from "../../context";
 const Navbar = () => {
   const { toggleSideMenu } = useContext(UiContext);
 
-  const { asPath } = useRouter();
-
   const router = useRouter();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -65,7 +63,7 @@ const Navbar = () => {
         >
           <NextLink href="/category/men" passHref legacyBehavior>
             <Link>
-              <Button color={asPath.includes("/men") ? "primary" : "info"}>
+              <Button color={router.asPath.includes("/men") ? "primary" : "info"}>
                 Hombres
               </Button>
             </Link>
@@ -73,14 +71,14 @@ const Navbar = () => {
 
           <NextLink href="/category/women" passHref legacyBehavior>
             <Link>
-              <Button color={asPath.includes("/women") ? "primary" : "info"}>
+              <Button color={router.asPath.includes("/women") ? "primary" : "info"}>
                 Mujeres
               </Button>
             </Link>
           </NextLink>
           <NextLink href="/category/kids" passHref legacyBehavior>
             <Link>
-              <Button color={asPath.includes("/kids") ? "primary" : "info"}>
+              <Button color={router.asPath.includes("/kids") ? "primary" : "info"}>
                 Niños
               </Button>
             </Link>

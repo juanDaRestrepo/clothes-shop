@@ -10,7 +10,7 @@ interface Props {
 
 
 
-const ProductSlideshow: FC<Props> = ({images}) => {
+export const ProductSlideshow: FC<Props> = ({images}) => {
   return (
     <Slide
         easing='ease'
@@ -36,4 +36,3 @@ const ProductSlideshow: FC<Props> = ({images}) => {
   )
 }
 
-export default ProductSlideshow

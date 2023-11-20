@@ -3,7 +3,7 @@ import { useProducts } from "../../hooks";
 import { ShopLayout } from "../../components/layouts";
 import { Typography } from "@mui/material";
 import FullScreenLoading from "../../components/ui/FullScreenLoading";
-import ProductList from "../../components/products/ProductCardList";
+import {ProductList} from "../../components/products";
 
 const MenPage = () => {
   const { products, isLoading } = useProducts("/products?gender=men");

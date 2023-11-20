@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { initialData } from "../../database/products";
 import NextLink from "next/link";
-import ItemCounter from "../ui/ItemCounter";
+import {ItemCounter} from "../ui";
 import { FC } from "react";
 
 const productsInCart = [

@@ -6,14 +6,20 @@ import { NextPage, GetStaticPaths, GetStaticProps } from "next";
 import { IProduct, ISize } from "../../interfaces";
 import { dbProducts } from "../../database";
 import { ICardProduct } from "../../interfaces/cart";
-import { useState } from "react";
-import Product from '../../models/Products';
+import { useContext, useState } from "react";
+import { Router, useRouter } from "next/router";
+import { CartContext } from "../../context";
 
 interface Props {
   product: IProduct;
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
+
+  const router = useRouter();
+
+  const { addProductToCart } = useContext(CartContext);
+
   const [tempCartProduct, setTempCartProduct] = useState<ICardProduct>({
     _id: product._id,
     image: product.images[0],
@@ -26,22 +32,27 @@ const ProductPage: NextPage<Props> = ({ product }) => {
   });
 
   const selectedSize = (size: ISize) => {
-    setTempCartProduct( currentProduct => ({
+    setTempCartProduct((currentProduct) => ({
       ...currentProduct,
-      size
-    }))
-  }
+      size,
+    }));
+  };
 
   const onUpdateQuantity = (quantity: number) => {
-    setTempCartProduct( currentProduct => ({
+    setTempCartProduct((currentProduct) => ({
       ...currentProduct,
-      quantity
-    }))
-  }
+      quantity,
+    }));
+  };
 
   const onAddProduct = () => {
-    console.log(tempCartProduct)
-  }
+    if (!tempCartProduct.size) {
+      return;
+    }
+
+    addProductToCart(tempCartProduct);
+    router.push('/cart');
+  };
 
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
@@ -62,8 +73,8 @@ const ProductPage: NextPage<Props> = ({ product }) => {
             {/* Cantidad */}
             <Box sx={{ my: 2 }}>
               <Typography variant="subtitle2">Cantidad</Typography>
-              <ItemCounter 
-                currentValue={ tempCartProduct.quantity}
+              <ItemCounter
+                currentValue={tempCartProduct.quantity}
                 updatedQuantity={onUpdateQuantity}
                 maxValue={product.inStock}
               />
@@ -76,8 +87,8 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 
             {/* Agregar al carrito */}
             {product.inStock > 0 ? (
-              <Button 
-                color="secondary" 
+              <Button
+                color="secondary"
                 className="circular-btn"
                 onClick={onAddProduct}
               >

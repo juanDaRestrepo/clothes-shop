@@ -3,11 +3,11 @@ import { ShopLayout } from "../../components/layouts";
 import { ItemCounter } from "../../components/ui";
 import { SizeSelector, ProductSlideshow } from "../../components/products";
 import { NextPage, GetStaticPaths, GetStaticProps } from "next";
-import { IProduct, ISize } from "../../interfaces";
+import { IProduct, SizeStock } from "../../interfaces";
 import { dbProducts } from "../../database";
 import { ICardProduct } from "../../interfaces/cart";
-import { useContext, useState } from "react";
-import { Router, useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { CartContext } from "../../context";
 
 interface Props {
@@ -20,6 +20,12 @@ const ProductPage: NextPage<Props> = ({ product }) => {
 
   const { addProductToCart } = useContext(CartContext);
 
+  const [tempProductSizeStock, setTempProductSizeStock] = useState<SizeStock>({
+    name: "L",
+    inStock: 0
+  });
+
+
   const [tempCartProduct, setTempCartProduct] = useState<ICardProduct>({
     _id: product._id,
     image: product.images[0],
@@ -31,11 +37,13 @@ const ProductPage: NextPage<Props> = ({ product }) => {
     quantity: 1,
   });
 
-  const selectedSize = (size: ISize) => {
+  const selectedSize = (size: SizeStock) => {
     setTempCartProduct((currentProduct) => ({
       ...currentProduct,
       size,
+      quantity: 1
     }));
+    setTempProductSizeStock(size);
   };
 
   const onUpdateQuantity = (quantity: number) => {
@@ -76,17 +84,17 @@ const ProductPage: NextPage<Props> = ({ product }) => {
               <ItemCounter
                 currentValue={tempCartProduct.quantity}
                 updatedQuantity={onUpdateQuantity}
-                maxValue={product.inStock}
+                maxValue={tempProductSizeStock.inStock}
               />
               <SizeSelector
                 sizes={product.sizes}
-                selectedSize={tempCartProduct.size}
+                selectedSize={tempCartProduct.size?.name}
                 onSelectedSize={selectedSize}
               />
             </Box>
 
             {/* Agregar al carrito */}
-            {product.inStock > 0 ? (
+            {tempProductSizeStock.inStock > 0 ? (
               <Button
                 color="secondary"
                 className="circular-btn"
@@ -98,7 +106,7 @@ const ProductPage: NextPage<Props> = ({ product }) => {
               </Button>
             ) : (
               <Chip
-                label="No hay disponibles"
+                label="Seleccione una talla"
                 color="error"
                 variant="outlined"
               />
@@ -116,28 +124,8 @@ const ProductPage: NextPage<Props> = ({ product }) => {
   );
 };
 
-/* export const getServerSideProps: GetServerSideProps = async ({params}) => {
-  
-  const { slug = '' } = params as { slug: string };
-  const product = await  getProductBySlug(slug);
 
-  if ( !product ) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false
-      }
-    }
-  } 
-
-  return {
-    props: {
-      product
-    }
-  }
-} */
-
-export const getStaticPaths: GetStaticPaths = async (ctx) => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const productSlugs = await dbProducts.getAllProductSlugs();
 
   return {

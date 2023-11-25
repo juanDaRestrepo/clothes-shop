@@ -1,4 +1,5 @@
 export interface IProduct {
+    _id: string;
     description: string;
     images: string[];
     sizes: SizeStock[];
@@ -8,9 +9,12 @@ export interface IProduct {
     type: ValidTypes;
     price: number;
     gender: 'men' | 'women' | 'kid' | 'unisex';
+
+    createdAt: string;
+    updatedAt: string;
 }
 
-interface SizeStock {
+export interface SizeStock {
     name: ValidSizes;
     inStock: number;
 }

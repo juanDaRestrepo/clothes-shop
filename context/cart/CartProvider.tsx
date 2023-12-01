@@ -28,9 +28,8 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
   },[state.cart])
 
   const addProductToCart = (product: ICardProduct) => {
-    console.log(state.cart.filter((p) => p._id === p._id && product.size?.name === p.size?.name))
     const products =
-      state.cart.filter((p) => p._id === p._id && product.size?.name === p.size?.name).length > 0
+    state.cart.filter((p) => p._id === product._id && product.size?.name === p.size?.name).length > 0
         ? state.cart.map((p) => ({ ...p, quantity: p.size?.name === product.size?.name 
                                                       ? calculateQuantity(product, p.quantity, product.quantity) 
                                                       : p.quantity }))

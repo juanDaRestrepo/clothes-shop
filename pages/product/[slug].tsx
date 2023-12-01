@@ -6,7 +6,7 @@ import { NextPage, GetStaticPaths, GetStaticProps } from "next";
 import { IProduct, SizeStock } from "../../interfaces";
 import { dbProducts } from "../../database";
 import { ICardProduct } from "../../interfaces/cart";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { CartContext } from "../../context";
 

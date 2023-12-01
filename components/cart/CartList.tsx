@@ -7,32 +7,41 @@ import {
   Link,
   Typography,
 } from "@mui/material";
-import { initialData } from "../../database/products";
-import NextLink from "next/link";
-import {ItemCounter} from "../ui";
-import { FC } from "react";
 
-const productsInCart = [
-  initialData.products[0],
-  initialData.products[2],
-  initialData.products[3],
-];
+import NextLink from "next/link";
+import { ItemCounter } from "../ui";
+import { FC, useContext, useState } from "react";
+import { ICardProduct, IProduct } from "../../interfaces";
+import Cookie from "js-cookie";
+import { CartState, cartReducer } from "../../context";
+import { CartContext } from "../../context/cart/CartContext";
+import Product from '../../models/Products';
 
 interface Props {
   editable?: boolean;
 }
 
+
 const CartList: FC<Props> = ({ editable = false }) => {
+
+  
+  const { cart, updateCartQuantity } = useContext(CartContext);
+
+  const onUpdateQuantity = (product: ICardProduct, newQuantity: number) => {
+    product.quantity = newQuantity;
+    updateCartQuantity(product);
+  };
+
   return (
     <>
-      {productsInCart.map((product) => (
-        <Grid container spacing={2} sx={{ mb: 1 }} key={product.slug}>
+      {cart.map((product) => (
+        <Grid container spacing={2} sx={{ mb: 1 }} key={product.slug + product.size?.name}>
           <Grid item xs={3}>
-            <NextLink href="/product/slug" passHref legacyBehavior>
+            <NextLink href={`/product/${product.slug}`} passHref legacyBehavior>
               <Link>
                 <CardActionArea>
                   <CardMedia
-                    image={`/products/${product.images[0]}`}
+                    image={`/products/${product.image}`}
                     component="img"
                     sx={{ borderRadius: "5px" }}
                   />
@@ -44,12 +53,16 @@ const CartList: FC<Props> = ({ editable = false }) => {
             <Box display="flex" flexDirection="column">
               <Typography variant="body1">{product.title}</Typography>
               <Typography variant="body1">
-                Talla: <strong>M</strong>{" "}
+                Talla: <strong>{product.size?.name}</strong>{" "}
               </Typography>
               {editable ? (
-                <ItemCounter />
+                <ItemCounter
+                  currentValue={product.quantity}
+                  maxValue={product.size?.inStock ? product.size.inStock : 1}
+                  updatedQuantity={(value) => onUpdateQuantity(product, value)}
+                />
               ) : (
-                <Typography variant="h5">3</Typography>
+                <Typography variant="h5">{product.quantity}</Typography>
               )}
             </Box>
           </Grid>

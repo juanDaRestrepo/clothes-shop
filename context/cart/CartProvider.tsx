@@ -28,12 +28,26 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
   },[state.cart])
 
   const addProductToCart = (product: ICardProduct) => {
+    console.log(state.cart.filter((p) => p._id === p._id && product.size?.name === p.size?.name))
     const products =
-      state.cart.filter((p) => p._id === p._id && product.size === p.size).length > 0
-        ? state.cart.map((p) => ({ ...product, quantity: product.quantity + p.quantity }))
+      state.cart.filter((p) => p._id === p._id && product.size?.name === p.size?.name).length > 0
+        ? state.cart.map((p) => ({ ...p, quantity: p.size?.name === product.size?.name 
+                                                      ? calculateQuantity(product, p.quantity, product.quantity) 
+                                                      : p.quantity }))
         : [...state.cart, product];
+        
     dispatch({ type: "[Cart] - Update Products in cart", payload: products });
   };
+
+  const calculateQuantity = (product: ICardProduct, previousQuantity: number, newQuantity: number) => {
+    if (product.size?.inStock == undefined) return previousQuantity + newQuantity;
+    if ((previousQuantity + newQuantity) > product.size?.inStock) return product.size?.inStock;
+    return previousQuantity + newQuantity;
+  }
+
+  const updateCartQuantity = ( product: ICardProduct) => {
+    dispatch({ type:'[Cart] - Change cart quantity', payload: product})
+  }
 
   return (
     <CartContext.Provider
@@ -41,6 +55,7 @@ export const CartProvider: FC<PropsWithChildren> = ({ children }) => {
         ...state,
 
         //Methods
+        updateCartQuantity,
         addProductToCart,
       }}
     >

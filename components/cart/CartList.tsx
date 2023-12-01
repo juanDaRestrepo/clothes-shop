@@ -10,12 +10,10 @@ import {
 
 import NextLink from "next/link";
 import { ItemCounter } from "../ui";
-import { FC, useContext, useState } from "react";
-import { ICardProduct, IProduct } from "../../interfaces";
-import Cookie from "js-cookie";
-import { CartState, cartReducer } from "../../context";
+import { FC, useContext } from "react";
+import { ICardProduct } from "../../interfaces";
 import { CartContext } from "../../context/cart/CartContext";
-import Product from '../../models/Products';
+
 
 interface Props {
   editable?: boolean;
@@ -25,7 +23,7 @@ interface Props {
 const CartList: FC<Props> = ({ editable = false }) => {
 
   
-  const { cart, updateCartQuantity } = useContext(CartContext);
+  const { cart, updateCartQuantity, removeCartProduct } = useContext(CartContext);
 
   const onUpdateQuantity = (product: ICardProduct, newQuantity: number) => {
     product.quantity = newQuantity;
@@ -75,7 +73,11 @@ const CartList: FC<Props> = ({ editable = false }) => {
           >
             <Typography variant="subtitle1">{product.price}</Typography>
             {editable && (
-              <Button variant="text" color="secondary">
+              <Button 
+                variant="text" 
+                color="secondary" 
+                onClick={() => removeCartProduct(product)}
+              >
                 Remover
               </Button>
             )}

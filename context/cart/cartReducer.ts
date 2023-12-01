@@ -5,6 +5,7 @@ type CartActionType =
     | { type: '[Cart] - LoadCart from cookies | storage', payload: ICardProduct[] }
     | { type: '[Cart] - Update Products in cart', payload: ICardProduct[] }
     | { type: '[Cart] - Change cart quantity', payload: ICardProduct }
+    | { type: '[Cart] - Remove product in cart', payload: ICardProduct[]}
 
 export const cartReducer = (state: CartState, action: CartActionType): CartState => {
     switch (action.type) {
@@ -32,6 +33,11 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
                         return action.payload;
                     })
                 }
+        case '[Cart] - Remove product in cart' : 
+            return {
+                ...state,
+                cart: [...action.payload]
+            }
         default:
             return state;
     }

@@ -27,7 +27,6 @@ type FormData = {
 const LoginPage = () => {
   const router = useRouter();
   const { loginUser } = useContext(AuthContext);
-    console.log(typeof loginUser)
   const {
     register,
     handleSubmit,
@@ -36,7 +35,7 @@ const LoginPage = () => {
   const [showError, setShowError] = useState(false);
 
   const onLoginUser = async ({ email, password }: FormData) => {
-    console.log(email);
+    
     setShowError(false);
 
     const isValidLogin = await loginUser(email, password);

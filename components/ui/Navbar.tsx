@@ -20,8 +20,7 @@ import { useRouter } from "next/router";
 
 import NextLink from "next/link";
 import { useContext, useState } from "react";
-import { CartContext, UiContext, cartReducer } from "../../context";
-import OrderSummary from '../cart/OrderSummary';
+import { CartContext, UiContext } from "../../context";
 
 const Navbar = () => {
   const { toggleSideMenu } = useContext(UiContext);

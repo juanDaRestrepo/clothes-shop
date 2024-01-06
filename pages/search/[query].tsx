@@ -2,7 +2,7 @@ import type { GetServerSideProps, NextPage } from "next";
 
 import { Box, Typography } from "@mui/material";
 import { ShopLayout } from "../../components/layouts";
-import ProductList from "../../components/products/ProductCardList";
+import {ProductList} from "../../components/products/ProductCardList";
 import FullScreenLoading from "../../components/ui/FullScreenLoading";
 import { dbProducts } from "../../database";
 import { IProduct } from "../../interfaces";

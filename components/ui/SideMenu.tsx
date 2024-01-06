@@ -29,11 +29,12 @@ import {
 import { useContext, useState } from "react";
 import { AuthContext, UiContext } from "../../context";
 import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 const SideMenu = () => {
   const router = useRouter();
   const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
-  const { user, isLoggedIn } = useContext(AuthContext);
+  const { user, isLoggedIn, logout } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState("");
 
   const onSearchTerm = () => {
@@ -41,6 +42,11 @@ const SideMenu = () => {
     toggleSideMenu();
     router.push(`/search/${searchTerm}`);
   };
+
+  const navigateTo = ( url: string ) => {
+    toggleSideMenu();
+    router.push(url);
+  }
 
   return (
     <Drawer
@@ -92,8 +98,7 @@ const SideMenu = () => {
 
           <ListItemButton
             sx={{ display: { xs: "", sm: "none" } }}
-            href="/category/men"
-            onClick={() => toggleSideMenu}
+            onClick={() => navigateTo("/category/men")}
           >
             <ListItemIcon>
               <MaleOutlined />
@@ -103,8 +108,7 @@ const SideMenu = () => {
 
           <ListItemButton
             sx={{ display: { xs: "", sm: "none" } }}
-            href="/category/women"
-            onClick={() => toggleSideMenu}
+            onClick={() => navigateTo("/category/women")}
           >
             <ListItemIcon>
               <FemaleOutlined />
@@ -114,8 +118,7 @@ const SideMenu = () => {
 
           <ListItemButton
             sx={{ display: { xs: "", sm: "none" } }}
-            href="/category/kids"
-            onClick={() => toggleSideMenu}
+            onClick={() => navigateTo("/category/kids")}
           >
             <ListItemIcon>
               <EscalatorWarningOutlined />
@@ -124,14 +127,14 @@ const SideMenu = () => {
           </ListItemButton>
 
           {isLoggedIn ? (
-            <ListItemButton>
+            <ListItemButton onClick={logout}>
               <ListItemIcon>
                 <LoginOutlined />
               </ListItemIcon>
               <ListItemText primary={"Salir"} />
             </ListItemButton>
           ) : (
-            <ListItemButton>
+            <ListItemButton onClick={() => navigateTo(`/auth/login?p=${ router.asPath}`)}>
               <ListItemIcon>
                 <VpnKeyOutlined />
               </ListItemIcon>

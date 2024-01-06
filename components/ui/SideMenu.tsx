@@ -27,25 +27,20 @@ import {
 } from "@mui/icons-material";
 
 import { useContext, useState } from "react";
-import { UiContext } from "../../context";
+import { AuthContext, UiContext } from "../../context";
 import { useRouter } from "next/router";
 
-
-
 const SideMenu = () => {
-
   const router = useRouter();
-  const { isMenuOpen, toggleSideMenu} = useContext(UiContext);
-
-  const [searchTerm, setSearchTerm] = useState('');
+  const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
+  const { user, isLoggedIn } = useContext(AuthContext);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const onSearchTerm = () => {
-    if( searchTerm.trim().length === 0) return;
+    if (searchTerm.trim().length === 0) return;
     toggleSideMenu();
-    router.push(`/search/${ searchTerm }`);
-  }
-
-  
+    router.push(`/search/${searchTerm}`);
+  };
 
   return (
     <Drawer
@@ -59,14 +54,17 @@ const SideMenu = () => {
           <ListItem>
             <Input
               autoFocus
-              value={ searchTerm }
+              value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyUp={(e) => e.key === 'Enter' ? onSearchTerm() : null }
+              onKeyUp={(e) => (e.key === "Enter" ? onSearchTerm() : null)}
               type="text"
               placeholder="Buscar..."
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility" onClick={onSearchTerm}>
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={onSearchTerm}
+                  >
                     <SearchOutlined />
                   </IconButton>
                 </InputAdornment>
@@ -74,83 +72,104 @@ const SideMenu = () => {
             />
           </ListItem>
 
-          <ListItemButton>
-            <ListItemIcon>
-              <AccountCircleOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Perfil"} />
-          </ListItemButton>
+          {isLoggedIn && (
+            <>
+              <ListItemButton>
+                <ListItemIcon>
+                  <AccountCircleOutlined />
+                </ListItemIcon>
+                <ListItemText primary={"Perfil"} />
+              </ListItemButton>
 
-          <ListItemButton>
-            <ListItemIcon>
-              <ConfirmationNumberOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Mis Ordenes"} />
-          </ListItemButton>
+              <ListItemButton>
+                <ListItemIcon>
+                  <ConfirmationNumberOutlined />
+                </ListItemIcon>
+                <ListItemText primary={"Mis Ordenes"} />
+              </ListItemButton>
+            </>
+          )}
 
-          <ListItemButton  sx={{ display: { xs: "", sm: "none" } }} href="/category/men" onClick={() => toggleSideMenu}>
+          <ListItemButton
+            sx={{ display: { xs: "", sm: "none" } }}
+            href="/category/men"
+            onClick={() => toggleSideMenu}
+          >
             <ListItemIcon>
               <MaleOutlined />
             </ListItemIcon>
             <ListItemText primary={"Hombres"} />
           </ListItemButton>
 
-          <ListItemButton sx={{ display: { xs: "", sm: "none" } }} href="/category/women" onClick={() => toggleSideMenu }>
+          <ListItemButton
+            sx={{ display: { xs: "", sm: "none" } }}
+            href="/category/women"
+            onClick={() => toggleSideMenu}
+          >
             <ListItemIcon>
               <FemaleOutlined />
             </ListItemIcon>
             <ListItemText primary={"Mujeres"} />
           </ListItemButton>
 
-          <ListItemButton sx={{ display: { xs: "", sm: "none" } }} href="/category/kids" onClick={() => toggleSideMenu }>
+          <ListItemButton
+            sx={{ display: { xs: "", sm: "none" } }}
+            href="/category/kids"
+            onClick={() => toggleSideMenu}
+          >
             <ListItemIcon>
               <EscalatorWarningOutlined />
             </ListItemIcon>
             <ListItemText primary={"Niños"} />
           </ListItemButton>
 
-          <ListItemButton>
-            <ListItemIcon>
-              <VpnKeyOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Ingresar"} />
-          </ListItemButton>
-
-          <ListItemButton>
-            <ListItemIcon>
-              <LoginOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Salir"} />
-          </ListItemButton>
+          {isLoggedIn ? (
+            <ListItemButton>
+              <ListItemIcon>
+                <LoginOutlined />
+              </ListItemIcon>
+              <ListItemText primary={"Salir"} />
+            </ListItemButton>
+          ) : (
+            <ListItemButton>
+              <ListItemIcon>
+                <VpnKeyOutlined />
+              </ListItemIcon>
+              <ListItemText primary={"Ingresar"} />
+            </ListItemButton>
+          )}
 
           {/* Admin */}
-          <Divider />
-          <ListSubheader>Admin Panel</ListSubheader>
+          {user?.role === "admin" && (
+            <>
+              <Divider />
+              <ListSubheader>Admin Panel</ListSubheader>
 
-          <ListItemButton>
-            <ListItemIcon>
-              <CategoryOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Productos"} />
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
-              <ConfirmationNumberOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Ordenes"} />
-          </ListItemButton>
+              <ListItemButton>
+                <ListItemIcon>
+                  <CategoryOutlined />
+                </ListItemIcon>
+                <ListItemText primary={"Productos"} />
+              </ListItemButton>
+              <ListItemButton>
+                <ListItemIcon>
+                  <ConfirmationNumberOutlined />
+                </ListItemIcon>
+                <ListItemText primary={"Ordenes"} />
+              </ListItemButton>
 
-          <ListItemButton>
-            <ListItemIcon>
-              <AdminPanelSettings />
-            </ListItemIcon>
-            <ListItemText primary={"Usuarios"} />
-          </ListItemButton>
+              <ListItemButton>
+                <ListItemIcon>
+                  <AdminPanelSettings />
+                </ListItemIcon>
+                <ListItemText primary={"Usuarios"} />
+              </ListItemButton>
+            </>
+          )}
         </List>
       </Box>
     </Drawer>
   );
 };
-
 
 export default SideMenu;

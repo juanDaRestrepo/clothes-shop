@@ -26,12 +26,13 @@ import {
   VpnKeyOutlined,
 } from "@mui/icons-material";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext, UiContext } from "../../context";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 
 const SideMenu = () => {
+
   const router = useRouter();
   const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
   const { user, isLoggedIn, logout } = useContext(AuthContext);
@@ -47,7 +48,7 @@ const SideMenu = () => {
     toggleSideMenu();
     router.push(url);
   }
-
+  
   return (
     <Drawer
       open={isMenuOpen}

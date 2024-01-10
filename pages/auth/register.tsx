@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
@@ -27,6 +27,12 @@ const RegisterPage = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     const [ showError, setShowError ] = useState(false);
     const [ errorMessage, setErrorMessage ] = useState('');
+    const [lastPage, setLastPage] = useState("");
+
+    useEffect(() => {
+        setLastPage(router.query.p?.toString() || '/');
+      }, [])
+    
 
     const onRegisterForm = async( {  name, email, password }: FormData ) => {
         
@@ -40,8 +46,8 @@ const RegisterPage = () => {
             return;
         }
         
-        // Todo: navegar a la pantalla que el usuario estaba
-        router.replace('/');
+        const destination = router.query.p?.toString() || '/'
+        router.replace(destination);
 
     }
 
@@ -117,7 +123,7 @@ const RegisterPage = () => {
                         </Grid>
 
                         <Grid item xs={12} display='flex' justifyContent='end'>
-                            <NextLink href="/auth/login" passHref>
+                            <NextLink  href={ router.query.p ? `/auth/login?p=${router.query.p}` : '/auth/login'} passHref>
                                 <Link underline='always'>
                                     ¿Ya tienes cuenta?
                                 </Link>

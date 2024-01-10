@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import NextLink from "next/link";
 
 import {
@@ -16,7 +16,6 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../context";
 import { AuthLayout } from "../../components/layouts";
 import { validations } from "../../utils";
-import { tesloApi } from "../../api";
 import { useRouter } from "next/router";
 
 type FormData = {
@@ -32,6 +31,7 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
+
   const [showError, setShowError] = useState(false);
 
   const onLoginUser = async ({ email, password }: FormData) => {
@@ -109,7 +109,7 @@ const LoginPage = () => {
               </Button>
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="end">
-              <NextLink href="/auth/register" passHref legacyBehavior>
+              <NextLink href={ router.query.p ? `/auth/register?p=${router.query.p}` : '/auth/register'} passHref legacyBehavior>
                 <Link underline="always">¿No tienes cuenta?</Link>
               </NextLink>
             </Grid>

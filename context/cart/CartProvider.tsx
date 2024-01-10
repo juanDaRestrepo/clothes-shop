@@ -4,6 +4,7 @@ import { ICardProduct } from "../../interfaces";
 import Cookie from "js-cookie";
 
 export interface CartState {
+  isLoaded: boolean;
   cart: ICardProduct[];
   numberOfItems: number;
   subtotal: number;
@@ -12,6 +13,7 @@ export interface CartState {
 }
 
 const CART_INITIAL_STATE: CartState = {
+  isLoaded: false,
   cart: [],
   numberOfItems: 0,
   subtotal: 0,

@@ -13,6 +13,8 @@ import {
 import CartList from "../../components/cart/CartList";
 import OrderSummary from "../../components/cart/OrderSummary";
 import NextLink from "next/link";
+import { GetServerSideProps } from "next";
+import { jwt } from "../../utils";
 
 const SummaryPage = () => {
   return (
@@ -71,5 +73,33 @@ const SummaryPage = () => {
     </ShopLayout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async ({req}) => {
+ 
+  const { token = '' } = req.cookies;
+  let isValidToken = false;
+
+  try {
+    await jwt.isValidToken(token);
+    isValidToken = true;
+  } catch (error) {
+    isValidToken = false;
+  }
+
+  if( !isValidToken ) {
+    return {
+      redirect: {
+        destination: '/auth/login?p=/checkout/summary',
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {
+      
+    }
+  }
+}
 
 export default SummaryPage;
